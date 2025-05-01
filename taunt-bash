@@ -7,7 +7,6 @@ declare -A messages=(
   ["NONZERO"]="non zero exit code"
   ["SIGSEGV"]="you have got a segmentation fault"
   ["SIGINT"]="you have got an interruption from terminal"
-  ["barf"]="arf arf arf"
 )
 
 declare -A symbol_table=(
@@ -15,7 +14,6 @@ declare -A symbol_table=(
   ["MINUSONE"]=255
   ["-1"]=255
   ["255"]=255
-  ["barf"]=87
 )
 
 declare -A signum_table=(
