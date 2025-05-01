@@ -2,7 +2,7 @@
 
 # taunt - it taunts you
 
-# messages here
+# Messages here
 declare -A messages=(
   ["NONZERO"]="non zero exit code"
   ["SIGSEGV"]="you have got a segmentation fault"
@@ -45,7 +45,7 @@ function tauntoff {
 }
 
 function _tauntcomp {
-  # taunts autocompletion
+  # taunt autocompletion
   declare -g a opts=(
       -sym --sym -symbols --symbols
       -sig --sig -signals --signals -signum --signum
@@ -110,7 +110,7 @@ function parse_signum {
   do
     signum_table["${signame}"]="${signum}"
 
-    # exit code is 128 + signal num in bash
+    # Exit code is 128 + signal num in bash
     exitcode_table[$((${signum} + 128))]="${signame}"
 
     [[ -n "${1}" ]] && \
@@ -246,8 +246,6 @@ function parse_messages {
     message="${message#\'}"
     message="${message%\'}"
 
-    #echo "start: ${message}" >> /dev/stderr
-
     case "${signame}" in
       SIG+([A-Z0-9]) )
         messages["${signame}"]="${message}"
@@ -343,7 +341,7 @@ function load_messages {
 
   file="${g_argmap["readfile"]}"
 
-  # clean
+  # Clean
   if [[ "$(("${g_argmask}" & 16))" -ne 0 ]]
   then
     ([[ ! -f "${msgs_file}" ]] || ! rm "${msgs_file}") && rm -f /tmp/tauntfile
@@ -353,7 +351,7 @@ function load_messages {
     shopt -u extglob
     exit 0
 
-  # download
+  # Download
   elif [[ "$(("${g_argmask}" & 32))" -ne 0 ]]
   then
     pull_messages "${g_argmap["url"]}" "${msgs_file}"
@@ -600,7 +598,7 @@ function deregister {
       [[ "${choice}" =~ ^n|N$ ]] && exit 0
     }
 
-  # change how this is used
+  # TODO: change how this is used
   bashrc_modified="$(realpath ./bashrc_modified_${USER})"
   cp -f "${bashrc}" "${bashrc_modified}"
   info "Backed up modified bashrc"
@@ -727,7 +725,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 1))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 1))
-          #expect="parsefile"
         fi
         expect="parsefile"
         ;;
@@ -736,7 +733,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 2))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 2))
-          #expect=""
         fi
         expect=""
         ;;
@@ -745,7 +741,6 @@ function parse_args {
         if [[ A"$(("${g_argmask}" & 4))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 4))
-          #expect=""
         fi
         expect=""
         ;;
@@ -754,9 +749,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 8))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 8))
-          #expect="readfile"
-        #else
-        #  echo "Option ${1} is redundant"
         fi
         expect="readfile"
 
@@ -765,10 +757,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 32))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 32))
-          #expect="url"
-        #else
-        #  echo "Option ${1} is redundant"
-        #  exit 0
         fi
         expect="url"
         ;;
@@ -777,7 +765,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 16))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 16))
-          #expect=""
         fi
         expect=""
         ;;
@@ -786,10 +773,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 64))" -eq 0 && "$(("${g_argmask}" & 128))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 64))
-          #expect="bashrcfile"
-        #else
-        #  echo "Option ${1} is redundant"
-        #  exit 0
         fi
         expect="bashrcfile"
         ;;
@@ -798,10 +781,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 128))" -eq 0 && "$(("${g_argmask}" & 64))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 128))
-          #expect="bashrcfile"
-        #else
-        #  echo "Option ${1} is redundant"
-        #  exit 0
         fi
         expect="bashrcfile"
         ;;
@@ -810,10 +789,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 256))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 256))
-          #expect="locale"
-        #else
-        #  echo "Option ${1} is redundant"
-        #  exit 0
         fi
         expect="locale"
         ;;
@@ -822,7 +797,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 512))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 512))
-          #expect=""
         fi
         expect=""
         ;;
@@ -831,7 +805,6 @@ function parse_args {
         if [[ "$(("${g_argmask}" & 1024))" -eq 0 ]]
         then
           g_argmask=$((${g_argmask} | 1024))
-          #expect=""
         fi
         expect=""
         ;;
@@ -953,7 +926,7 @@ pager() {
   fi
 }
 
-# logstuff
+# Logstuff
 function check_color_term {
   colors="$(tput colors 2>/dev/null)" && \
     [[ "${colors}" -gt 2 ]] && \
@@ -1027,7 +1000,7 @@ shopt -u extglob
 
 [[ "$(("${g_argmask}" & 7))" -ne 0 ]] && exit 0
 
-# register
+# Register
 if [[ "$(("${g_argmask}" & 64))" -ne 0 ]]
 then
   find_espeak
