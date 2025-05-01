@@ -1,0 +1,7 @@
+#!/bin/bash
+
+target="$(dirname "$(realpath "${0}")")""/taunt-bash"
+[[ ! -f "${target}" ]] && echo "Could not find ""${target}" && exit 1
+
+sudo ln -s -T "${target}" /usr/local/bin/taunt
+[[ ! -f "/usr/local/bin/taunt" ]] && echo "Failed to install taunt" && exit 1
