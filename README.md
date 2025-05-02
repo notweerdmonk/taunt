@@ -73,5 +73,5 @@
 	parses them. User may provide a file containing messages to be parsed.
 
 #### AUTOCOMPLETE
-  taunt commands support argument autocompletion upon registraton. The
-  script should be sourced in the shell to enable autocompleton.
+	taunt commands support argument autocompletion upon registraton. The
+	script should be sourced in the shell to enable autocompleton.
