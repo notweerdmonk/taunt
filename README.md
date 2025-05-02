@@ -71,3 +71,7 @@
 	mapping exit codes to names and also the exit code for the message. After
 	pulling messages from an URL and storing them on disk, the script only 
 	parses them. User may provide a file containing messages to be parsed.
+
+#### AUTOCOMPLETE
+  taunt commands support argument autocompletion upon registraton. The
+  script should be sourced in the shell to enable autocompleton.

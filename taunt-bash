@@ -901,6 +901,10 @@ function print_help {
   echo -e "\tpulling messages from an URL and storing them on disk, the script only "
   echo -e "\tparses them. User may provide a file containing messages to be parsed."
   echo
+  echo "AUTOCOMPLETE"
+  echo -e "\ttaunt commands support argument autocompletion upon registraton. The "
+  echo -e "\tscript should be sourced in the shell to enable autocompleton."
+  echo
 }
 
 
@@ -981,8 +985,48 @@ function table_footer {
   return "${len}"
 }
 
+function _tauntcomp {
+  declare -g a opts=(\
+      -sym --sym -symbols --symbols \
+	    -sig --sig -signals --signals -signum --signum \
+	    -sys --sys -sysexit --sysexit \
+	    -m --m -messages --messages \
+	    -d --d -download --download \
+	    -r --r -reg --reg -register --register \
+	    --x --x -dereg --dereg -deregister --deregister \
+	    -c --c -clean --clean \
+	    -l --l -locale --locale \
+	    -h --h -help --help \
+    )
+
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD - 1]}"
+
+  if [[ -d "${prev}" ]] || \
+    [[ "${prev}" =~ ^-{1,2}(sym|symbols|messages|m|r|reg|register|dereg|deregister)$ ]]
+  then
+    COMPREPLY=($(compgen -f -- "${cur}"))
+  elif [[ "${prev}" =~ ^-{1,2}[l|locale]$ ]]
+  then
+    COMPREPLY=($(compgen -W "$(locale -a)" -- "${cur}"))
+  else
+    COMPREPLY=($(compgen -W "${opts[*]}" -- "${cur}"))
+  fi
+}
+
 # Start
-complete -F _comp "taunt"
+g_scriptname="$(basename "$(realpath "${BASH_SOURCE[0]}")")"
+# Check for BASH_VERSION inside a subshell
+([[ -n "{BASH_VERSION}" ]] && (return 0 2>/dev/null)) && \
+  {
+    autocomp_name="$(complete -p | grep "${g_scriptname}")"
+    [[ -n "${autocomp_name}" ]] && autocomp_name="${autocomp_name##* }"
+    [[ -n "${autocomp_name}" ]] && complete -r "${autocomp_name}"
+    true
+  } && \
+  complete -F _tauntcomp -o filenames "${g_scriptname}" && \
+  return 0
+
 check_color_term
 
 parse_args "$@"
@@ -1018,32 +1062,3 @@ else
   shopt -u extglob
   speak "${g_argmap["exitcode"]}"
 fi
-
-function _tauntcomp {
-  declare -g a opts=(\
-      -sym --sym -symbols --symbols \
-	    -sig --sig -signals --signals -signum --signum \
-	    -sys --sys -sysexit --sysexit \
-	    -m --m -messages --messages \
-	    -d --d -download --download \
-	    -r --r -reg --reg -register --register \
-	    --x --x -dereg --dereg -deregister --deregister \
-	    -c --c -clean --clean \
-	    -l --l -locale --locale \
-	    -h --h -help --help \
-    )
-
-  cur="${COMP_WORDS[COMP_CWORD]}"
-  prev="${COMP_WORDS[COMP_CWORD - 1]}"
-
-  if [[ -d "${prev}" ]] || \
-    [[ "${prev}" =~ ^-{1,2}(sym|symbols|messages|m|r|reg|register|dereg|deregister)$ ]]
-  then
-    COMPREPLY=($(compgen -f -- "${cur}"))
-  elif [[ "${prev}" =~ ^-{1,2}[l|locale]$ ]]
-  then
-    COMPREPLY=($(compgen -W "$(locale -a)" -- "${cur}"))
-  else
-    COMPREPLY=($(compgen -W "${opts[*]}" -- "${cur}"))
-  fi
-}
