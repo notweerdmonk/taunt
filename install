@@ -1,6 +1,6 @@
 #!/bin/bash
 
-target="$(dirname "$(realpath "${0}")")""/taunt-bash"
+target="$(dirname "$(realpath "${0}")")""/taunt.bash"
 [[ ! -f "${target}" ]] && echo "Could not find ""${target}" && exit 1
 
 sudo ln -s -T "${target}" /usr/local/bin/taunt

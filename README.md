@@ -1,7 +1,7 @@
 # taunt - taunts on command exit codes
 
 #### USAGE
-	taunt-bash [OPTIONS...] [ARGUMENT]
+	taunt.bash [OPTIONS...] [ARGUMENT]
 
 #### DESCRIPTION
 	Read out messages to the user with espeak-ng based on the exit code of
